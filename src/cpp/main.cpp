@@ -42,7 +42,9 @@ void constructData() {
 
 
 void conv2d() {
+#ifdef USE_OPENMP
 #pragma omp parallel for
+#endif
     for (int i = 0; i < output_width; i++) {
         for (int j = 0; j < output_height; j++) {
             output[i][j] = 0;
@@ -69,6 +71,12 @@ void printResults() {
 
 
 int main() {
+    #ifdef USE_OPENMP
+        cout << "Using OPENMP optimization features" << endl;
+    #else
+	cout << "Not using OPENMP optimization features" << endl;
+    #endif
+    
     constructData();
 
     auto start = std::chrono::high_resolution_clock::now();
